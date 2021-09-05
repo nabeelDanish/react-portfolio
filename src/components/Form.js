@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form";
 import sanityClient from "../client.js";
-import createComment from "./createComment.js";
 
 export default function Form ({_id}) {
     // Setting up basic data state
@@ -12,7 +11,7 @@ export default function Form ({_id}) {
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
     // Preparing the functions from react-hook-form
-    const { register, handleSubmit, watch, errors } = useForm()
+    const { register, handleSubmit } = useForm()
 
     // Function for handling the form submission
     const onSubmit = async data => {
