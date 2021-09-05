@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import sanityClient from "../client.js";
 import imageUrlBuilder from "@sanity/image-url";
 import BlockContent from "@sanity/block-content-to-react";
+import Comments from "./Comments"
+import Form from "./Form"
 
 const builder = imageUrlBuilder(sanityClient);
 
@@ -30,7 +32,14 @@ export default function SinglePost() {
             },
             body,
             "name": author->name,
-            "authorImage": author->image
+            "authorImage": author->image,
+            "comments": *[_type == "comment" && post._ref == ^._id && approved == true] {
+                _id,
+                name,
+                email,
+                comment,
+                _createdAt,
+            },
         }`)
         .then((data) => setSinglePost(data[0]))
         .catch(console.error());
@@ -75,6 +84,12 @@ export default function SinglePost() {
                         dataset="production"
                     />
                 </div>
+            </article>
+            <br />
+            <br />
+            <article className="container shadow-lg mx-auto bg-green-100 rounded-lg items-center p-12">
+                <Comments comments={singlePost?.comments}/>
+                <Form _id={singlePost._id} />
             </article>
         </main>
     ); // End of HTML
